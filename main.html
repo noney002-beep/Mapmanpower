@@ -2,7 +2,7 @@
 <!-- saved from url=(0042)file:///C:/Users/tmt/Downloads/main_2.html -->
 <html lang="th"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>(W) Manpower Map</title>
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="anonymous">
@@ -39,16 +39,14 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
-            /* ปิด Scrollbar ของทั้งหน้า */
-            touch-action: none;
-            /* ปิดการซูม/เลื่อนด้วยนิ้วของเบราว์เซอร์ */
-            position: fixed;
-            /* ล็อกตำแหน่งหน้าจอให้คงที่ */
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: manipulation;
             width: 100%;
-            height: 100vh;
             margin: 0;
             padding: 0;
+            position: relative;
         }
 
         /* ─── Dot grid background ─── */
@@ -231,21 +229,31 @@
         /* ─── Layout Section ─── */
         main {
             flex: 1;
-            /* ให้ Main ยืดกินพื้นที่ที่เหลือทั้งหมด */
-            padding: 1.5rem;
+            padding: clamp(1rem, 2.2vw, 1.5rem);
             width: 100%;
-            /* ชิดขอบซ้ายขวา */
             display: flex;
             flex-direction: column;
             min-height: 0;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .controls {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            gap: 1rem;
             margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .controls-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            min-width: 220px;
+            align-items: stretch;
+            width: 100%;
+            max-width: 280px;
         }
 
         .btn-add {
@@ -513,7 +521,7 @@
         #layout-canvas {
             width: 100%;
             flex: 1;
-            /* แทนที่ height: 650px; เพื่อให้ยืดเต็มหน้าจอพอดี */
+            min-height: min(70vh, 560px);
             background: #eee;
             border: 2px solid var(--slate-300);
             border-radius: 16px;
@@ -521,6 +529,9 @@
             overflow: hidden;
             box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
             cursor: grab;
+            touch-action: none;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         #layout-canvas:active {
@@ -585,6 +596,7 @@
             flex-direction: column;
             align-items: center;
             user-select: none;
+            -webkit-user-select: none;
             animation: fadeUp 0.3s ease-out;
             touch-action: none;
             z-index: 10;
@@ -647,9 +659,69 @@
             }
         }
 
+        @media (max-width: 768px) {
+            .header-inner {
+                height: auto;
+                min-height: 64px;
+                padding: 0.8rem 1rem;
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            main {
+                padding: 1rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .controls-actions {
+                max-width: none;
+                min-width: 0;
+            }
+
+            .btn-add,
+            .btn-list,
+            .btn-back-overview,
+            .overview-staff-list-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 14px;
+            }
+
+            .map-summary-bar {
+                border-radius: 14px;
+                padding: 10px 12px;
+            }
+
+            .map-summary-bar .count-pill {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
         @media (max-width: 480px) {
             .hero h1 {
                 font-size: 1.75rem;
+            }
+
+            .brand-text .title {
+                font-size: 13px;
+            }
+
+            .brand-text .label {
+                font-size: 9px;
+            }
+
+            .overview-map-card {
+                min-width: 0;
+                min-height: 280px;
+            }
+
+            .overview-map-wrap {
+                height: clamp(260px, 48vh, 420px);
             }
         }
 
@@ -687,8 +759,15 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 0.75rem 1rem;
             flex-shrink: 0;
             background: white;
+        }
+
+        .modal-header .header-left {
+            flex: 1 1 220px;
+            min-width: 0;
         }
 
         .modal-body {
@@ -766,6 +845,14 @@
 
             .modal-body {
                 padding: 1rem;
+            }
+
+            .modal-header {
+                padding: 1rem 1rem 0.9rem;
+            }
+
+            .close-modal {
+                margin-left: 0;
             }
         }
 
@@ -1226,6 +1313,8 @@
             cursor: pointer;
             line-height: 1;
             padding: 0 4px;
+            flex-shrink: 0;
+            margin-left: auto;
         }
 
         .close-modal:hover {
@@ -1845,7 +1934,7 @@
                 <div id="submapBar" class="submap-bar" style="display: none;"></div>
             </div>
             
-            <div style="display: flex; flex-direction: column; gap: 8px; min-width: 220px; align-items: stretch;">
+            <div class="controls-actions">
                 <button class="btn-list" onclick="toggleStaffModal(true)" style="background: var(--white); color: var(--maroon); border: 1px solid var(--maroon-border); padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; width: 100%; justify-content: flex-start;">
                     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path d="M4 6h16M4 12h16M4 18h16"></path>
@@ -1943,7 +2032,7 @@
                                 <h3 id="staffFormTitle" style="font-size: 1.1rem; font-weight: 700;">เพิ่มรายชื่อพนักงานใหม่</h3>
                                 <p id="staffFormSubtitle" style="font-size: 12px; color: var(--slate-500); margin-top: 2px;">กรอกข้อมูลพนักงานให้ครบถ้วน</p>
                             </div>
-                            <button class="close-modal" onclick="closeAddStaffForm()">×</button>
+                            <button class="close-modal" type="button" onclick="closeAddStaffForm()" aria-label="ปิด">×</button>
                         </div>
                 
                         <div class="modal-body" style="padding: 20px; overflow-y: auto;">
