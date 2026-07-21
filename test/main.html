@@ -2,7 +2,7 @@
 <!-- saved from url=(0042)file:///C:/Users/tmt/Downloads/main_2.html -->
 <html lang="th"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
     <title>(W) Manpower Map</title>
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="anonymous">
@@ -34,19 +34,19 @@
 
         body {
             font-family: 'Sora', 'Noto Sans Thai', sans-serif;
-            background: #f5f6f8;
+            background: var(--bg);
             color: var(--slate-900);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             overflow-x: hidden;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
             touch-action: manipulation;
+            position: relative;
             width: 100%;
+            min-height: 100dvh;
             margin: 0;
             padding: 0;
-            position: relative;
         }
 
         /* ─── Dot grid background ─── */
@@ -54,8 +54,8 @@
             content: '';
             position: fixed;
             inset: 0;
-            background-image: radial-gradient(circle, rgba(128, 0, 0, 0.025) 1px, transparent 1px);
-            background-size: 32px 32px;
+            background-image: radial-gradient(circle, rgba(128, 0, 0, 0.06) 1px, transparent 1px);
+            background-size: 28px 28px;
             pointer-events: none;
             z-index: 0;
         }
@@ -71,8 +71,8 @@
         }
 
         .header-inner {
-            width: min(1240px, 100%);
-            margin: 0 auto;
+            width: 100%;
+            /* เปลี่ยนจาก 1200px เป็น 100% */
             padding: 0 1.5rem;
             height: 64px;
             display: flex;
@@ -229,229 +229,35 @@
         /* ─── Layout Section ─── */
         main {
             flex: 1;
-            padding: clamp(0.75rem, 1.75vw, 1.2rem);
+            /* ให้ Main ยืดกินพื้นที่ที่เหลือทั้งหมด */
+            padding: 1.5rem;
             width: 100%;
-            max-width: 1240px;
-            margin: 0 auto;
+            /* ชิดขอบซ้ายขวา */
             display: flex;
             flex-direction: column;
             min-height: 0;
-            overflow: visible;
+            overflow: hidden;
         }
 
         .controls {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.9rem;
-            margin-bottom: 1.25rem;
-            align-items: stretch;
-            width: 100%;
-        }
-
-        .controls-left,
-        .controls-right {
             display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-            width: 100%;
-        }
-
-        .control-buttons {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.85rem;
-        }
-
-        .right-panel {
-            background: transparent;
-            border: 1px solid rgba(148, 163, 184, 0.06);
-            border-radius: 10px;
-            padding: 0.35rem;
-            box-shadow: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.35rem;
-            width: 100%;
-            max-width: none;
-        }
-
-        .panel-actions {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.3rem;
-            align-items: center;
-        }
-
-        .panel-summary {
-            display: grid;
-            gap: 0;
-            background: transparent;
-            border: none;
-            border-radius: 8px;
-            padding: 0;
-            overflow: visible;
-            max-height: none;
-        }
-
-        .control-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .control-section {
-            display: grid;
-            gap: 0.85rem;
-        }
-
-        .control-buttons {
-            display: grid;
-            gap: 0.85rem;
-        }
-
-
-        .control-btn {
-            width: 100%;
-            justify-content: center;
-            padding: 6px 8px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            border: 1px solid rgba(148, 163, 184, 0.12);
-            background: rgba(255,255,255,0.7);
-            color: var(--slate-800);
-            transition: background 0.12s ease, transform 0.12s ease, border-color 0.12s ease;
-            cursor: pointer;
-        }
-
-        .control-btn svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .control-btn:hover {
-            background: var(--slate-50);
-            transform: translateY(-1px);
-        }
-
-        .btn-add,
-        .btn-list,
-        .btn-back-overview {
-            width: 100%;
-            justify-content: center;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 13px;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
         }
 
         .btn-add {
-            background: white;
-            color: var(--maroon);
-            border: 1px solid rgba(128, 0, 0, 0.2);
-            transition: background 0.2s, transform 0.2s, border-color 0.2s, box-shadow 0.2s;
-        }
-
-        .btn-add:hover {
-            background: rgba(128, 0, 0, 0.08);
-            border-color: rgba(128, 0, 0, 0.3);
-            box-shadow: 0 3px 10px rgba(128, 0, 0, 0.08);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: #f8fafc;
-            border-color: var(--slate-300);
-            color: var(--slate-900);
-        }
-
-        .report-btn {
-            justify-content: center;
+            background: var(--maroon);
+            color: white;
+            border: none;
+            padding: 10px 20px;
             border-radius: 8px;
-            padding: 7px 8px;
-            font-weight: 700;
-            color: var(--maroon);
-            border-color: rgba(128, 0, 0, 0.12);
-            background: rgba(255,255,255,0.7);
-            font-size: 11px;
-            box-shadow: none;
-            border: 1px solid rgba(148,163,184,0.06);
-        }
-
-        .summary-line {
+            font-weight: 600;
+            cursor: pointer;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 0.35rem;
-            padding: 4px 6px;
-            border-radius: 6px;
-            border-bottom: 1px solid rgba(15, 23, 42, 0.03);
-            background: transparent;
-            color: var(--slate-800);
-            font-size: 9.25px;
-            line-height: 1.05;
-        }
-
-        .summary-meta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            color: var(--slate-600);
-            font-size: 9px;
-        }
-
-        .summary-meta .summary-icon {
-            display: inline-flex;
-            width: 18px;
-            height: 18px;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            background: var(--slate-50);
-            color: var(--maroon);
-            font-size: 12px;
-        }
-
-        .summary-line strong {
-            font-size: 0.8rem;
-            color: var(--maroon);
-            min-width: 1.6rem;
-            text-align: right;
-        }
-
-        .summary-pill-row {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0.5rem;
-        }
-
-        .summary-pill {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 8px 10px;
-            border-radius: 12px;
-            border: 1px solid rgba(148, 163, 184, 0.16);
-            background: white;
-            color: var(--slate-900);
-            box-shadow: 0 3px 8px rgba(15, 23, 42, 0.04);
-            min-height: 40px;
-        }
-
-        .summary-pill strong {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--maroon);
-        }
-
-        .summary-label {
-            color: var(--slate-500);
-            font-size: 11px;
-            line-height: 1.3;
-            white-space: nowrap;
+            gap: 8px;
+            transition: 0.3s;
         }
 
         .btn-add:hover {
@@ -461,6 +267,31 @@
 
         .btn-add:active {
             transform: scale(0.98);
+        }
+
+        .map-summary-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid var(--maroon-border);
+            border-radius: 999px;
+            padding: 8px 14px;
+            box-shadow: 0 4px 12px rgba(128, 0, 0, 0.08);
+            color: var(--slate-700);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .map-summary-bar .count-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: var(--maroon-muted);
+            color: var(--maroon);
         }
 
         .simple-map-summary {
@@ -512,209 +343,83 @@
         }
 
         .zone-shift-summary {
-            margin: 0 auto 16px;
-            width: min(100%, 1120px);
-            border: none;
-            padding: 0;
-            overflow: auto;
+            margin-top: 8px;
+            border-top: 1px solid var(--slate-200);
+            padding-top: 8px;
         }
 
-        .zone-shift-summary.top-zone-summary {
-            display: flex;
-            gap: 12px;
-            overflow: hidden;
-            padding: 10px;
-            scroll-snap-type: x mandatory;
-            background: #ffffff;
-            border: 1px solid rgba(148, 163, 184, 0.08);
-            border-radius: 14px;
-            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
-            align-items: center;
-        }
-
-        .zone-shift-summary.top-zone-summary .summary-row {
-            min-width: 180px;
-            max-width: 220px;
-            flex: 0 0 auto;
+        .zone-shift-summary .summary-subtitle {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--slate-600);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 6px;
         }
 
         .zone-shift-summary .summary-list {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            flex: 1 1 auto;
-        }
-
-        .zone-shift-summary .summary-list::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .zone-shift-summary .summary-list::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .zone-shift-summary .summary-list::-webkit-scrollbar-thumb {
-            background: linear-gradient(90deg, rgba(128,0,0,0.12), rgba(128,0,0,0.18));
-            border-radius: 999px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
         }
 
         .zone-shift-summary .summary-row {
-            position: relative;
             display: flex;
             flex-direction: column;
             align-items: stretch;
-            gap: 8px;
-            background: #fff;
-            border: 1px solid rgba(148, 163, 184, 0.10);
-            border-radius: 14px;
-            padding: 10px 10px 12px 18px;
-            min-width: 200px;
-            max-width: 240px;
-            height: auto;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+            gap: 6px;
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            padding: 8px 10px;
+            border-left: 3px solid var(--process-color, var(--maroon));
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
             cursor: pointer;
             transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-            scroll-snap-align: start;
-            overflow: visible;
-        }
-
-        .zone-shift-summary .summary-row::before {
-            content: '';
-            position: absolute;
-            left: 10px;
-            top: 8px;
-            bottom: 8px;
-            width: 6px;
-            border-radius: 6px;
-            background: var(--process-color, var(--maroon));
-            flex: 0 0 auto;
-        }
-
-        .zone-shift-summary .summary-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            width: 100%;
-        }
-
-        /* summary-total removed per user request */
-            min-width: 86px;
-            padding: 8px 12px;
-        .zone-shift-summary .summary-zone {
-            font-size: 13px;
-            background: #eef6ff;
-            color: #1d4ed8;
-            border-color: #bfdbfe;
-            color: var(--slate-900);
         }
 
         .zone-shift-summary .summary-row:hover,
         .zone-shift-summary .summary-row:focus-visible {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(15, 23, 42, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
             outline: none;
         }
 
         .zone-shift-summary .summary-zone {
             display: flex;
             align-items: center;
-            gap: 4px;
-            font-size: 10.5px;
+            gap: 6px;
+            font-size: 13px;
             font-weight: 700;
-            color: var(--slate-900);
+            color: var(--slate-800);
         }
 
         .zone-shift-summary .summary-zone-dot {
-            width: 7px;
-            height: 7px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background: var(--process-color, var(--maroon));
             flex: 0 0 auto;
         }
 
         .zone-shift-summary .summary-badges {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 8px;
-            align-items: stretch;
-            justify-content: stretch;
-        }
-
-        .summary-subtitle {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--slate-700);
-            margin: 6px 0 8px 6px;
-            padding: 0;
-        }
-
-        .zone-shift-summary.top-zone-summary .summary-subtitle {
-            flex: 0 0 220px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(180deg, #fff, #fff);
-            border-radius: 10px;
-            padding: 10px 12px;
-            margin: 0;
-            font-size: 13px;
-            color: var(--slate-800);
-            border: 1px solid rgba(148,163,184,0.06);
-            box-shadow: 0 2px 6px rgba(15,23,42,0.04);
-        }
-
-        .zone-shift-summary .summary-zone {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--slate-900);
-        }
-
-        .zone-shift-summary .summary-row:focus-visible {
-            outline: 3px solid rgba(128,0,0,0.12);
-            box-shadow: 0 6px 18px rgba(15,23,42,0.12);
-            transform: translateY(-2px);
+            gap: 4px;
+            flex-wrap: nowrap;
+            justify-content: flex-start;
         }
 
         .zone-shift-summary .summary-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 7px 10px;
-            border-radius: 14px;
-            font-size: 12px;
-            font-weight: 700;
-            border: 1px solid rgba(148, 163, 184, 0.12);
-            background: #ffffff;
-            color: var(--slate-700);
-            white-space: normal;
-            width: 100%;
-        }
-
-        .zone-shift-summary .summary-badge .badge-num {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 28px;
-            height: 28px;
+            gap: 3px;
+            padding: 3px 6px;
             border-radius: 999px;
-            font-size: 12px;
-            font-weight: 800;
-            background: rgba(128,0,0,0.06);
-            color: var(--maroon);
-            border: 1px solid rgba(128,0,0,0.06);
-        }
-
-        .zone-shift-summary .summary-badge .badge-label {
-            display: inline-block;
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 700;
-            color: var(--slate-600);
-            text-transform: none;
-            white-space: normal;
+            border: 1px solid var(--slate-300);
+            background: #f8fafc;
+            color: var(--slate-700);
         }
 
         .zone-shift-summary .summary-badge.yellow {
@@ -733,146 +438,11 @@
             background: #eff6ff;
             color: #1d4ed8;
             border-color: #bfdbfe;
-            grid-column: 1 / -1;
         }
 
-        .zone-shift-summary .summary-badge.yellow .badge-num {
-            background: #fef3c7;
-            color: #92400e;
-            border-color: #fcd34d;
-        }
-
-        .zone-shift-summary .summary-badge.white .badge-num {
-            background: #f8fafc;
-            color: #334155;
-            border-color: #cbd5e1;
-        }
-
-        .zone-shift-summary .summary-badge.newcomer .badge-num {
-            background: #eff6ff;
-            color: #1d4ed8;
-            border-color: #bfdbfe;
-        }
-
-        .zone-shift-summary .summary-zone span {
-            overflow: visible;
-            text-overflow: clip;
-            white-space: normal;
-            display: block;
-            max-width: 100%;
-        }
-
-        .zone-shift-summary .summary-badge .badge-label {
-            white-space: normal;
-            font-size: 10px;
-        }
-
-        @media (max-width: 800px) {
-            .zone-shift-summary.top-zone-summary {
-                padding: 10px 6px;
-            }
-
-            .zone-shift-summary .summary-list {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-                gap: 10px;
-                padding-bottom: 0;
-            }
-
-            .zone-shift-summary .summary-row {
-                width: 100%;
-                min-width: auto;
-                max-width: none;
-            }
-            .zone-shift-summary .summary-badges {
-                flex-wrap: wrap;
-                gap: 6px;
-            }
-        }
-
-        @media (max-width: 1024px) {
-            .zone-shift-summary.top-zone-summary .summary-row {
-                min-width: 220px;
-                max-width: 280px;
-            }
-
-            .zone-shift-summary.top-zone-summary .summary-subtitle {
-                flex: 0 0 180px;
-            }
-
-            .zone-shift-summary .summary-badge {
-                min-width: 72px;
-                padding: 7px 10px;
-            }
-
-            .zone-shift-summary .summary-badge .badge-num {
-                width: 26px;
-                height: 26px;
-            }
-        }
-
-        @media (max-width: 800px) {
-            .zone-shift-summary.top-zone-summary {
-                display: block;
-                padding: 8px;
-            }
-
-            .zone-shift-summary.top-zone-summary .summary-subtitle {
-                display: block;
-                width: 100%;
-                text-align: left;
-                padding: 8px 10px;
-                margin-bottom: 8px;
-                box-sizing: border-box;
-            }
-
-            .zone-shift-summary .summary-list {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-                gap: 12px;
-                padding-bottom: 0;
-            }
-
-            .zone-shift-summary .summary-row {
-                width: 100%;
-                min-width: auto;
-                max-width: none;
-                padding: 12px 14px 14px 20px;
-            }
-
-            .zone-shift-summary .summary-badges {
-                gap: 8px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .zone-shift-summary.top-zone-summary {
-                padding: 6px;
-            }
-
-            .zone-shift-summary.top-zone-summary .summary-subtitle {
-                display: none;
-            }
-
+        @media (max-width: 600px) {
             .zone-shift-summary .summary-list {
                 grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-            .zone-shift-summary .summary-row {
-                padding: 14px 12px;
-                border-radius: 12px;
-            }
-
-            .zone-shift-summary .summary-badge {
-                min-width: 0;
-                padding: 8px 10px;
-                font-size: 13px;
-            }
-
-            .control-btn, .btn-add, .btn-list, .btn-back-overview {
-                padding: 12px 14px;
-                font-size: 14px;
             }
         }
 
@@ -941,7 +511,7 @@
         #layout-canvas {
             width: 100%;
             flex: 1;
-            min-height: min(70vh, 560px);
+            /* แทนที่ height: 650px; เพื่อให้ยืดเต็มหน้าจอพอดี */
             background: #eee;
             border: 2px solid var(--slate-300);
             border-radius: 16px;
@@ -949,9 +519,6 @@
             overflow: hidden;
             box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.05);
             cursor: grab;
-            touch-action: none;
-            -webkit-user-select: none;
-            user-select: none;
         }
 
         #layout-canvas:active {
@@ -1016,7 +583,6 @@
             flex-direction: column;
             align-items: center;
             user-select: none;
-            -webkit-user-select: none;
             animation: fadeUp 0.3s ease-out;
             touch-action: none;
             z-index: 10;
@@ -1064,73 +630,10 @@
         }
 
         /* ─── Responsive ─── */
-        @media (max-width: 699px) {
-            .card-grid {
-                grid-template-columns: 1fr;
-                max-width: 360px;
-            }
-
-            .card-item:nth-child(3) {
-                grid-column: auto;
-            }
-
-            .user-meta {
-                display: none;
-            }
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 820px) {
             .header-inner {
-                height: auto;
-                min-height: 64px;
-                padding: 0.8rem 1rem;
-                flex-wrap: wrap;
-                gap: 0.75rem;
-            }
-
-            main {
-                padding: 1rem;
-            }
-
-            .controls {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 0.9rem;
-            }
-
-            .controls-left,
-            .controls-right {
-                width: 100%;
-            }
-
-            .controls-actions {
-                max-width: none;
-                min-width: 0;
-            }
-
-            .btn-add,
-            .btn-list,
-            .btn-back-overview {
-                width: 100%;
-                justify-content: center;
-                padding: 10px 12px;
-                font-size: 13px;
-            }
-
-            .map-summary-bar {
-                border-radius: 14px;
-                padding: 10px 12px;
-            }
-
-            .map-summary-bar .count-pill {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 1.75rem;
+                padding: 0 0.9rem;
+                min-height: 58px;
             }
 
             .brand-text .title {
@@ -1141,13 +644,70 @@
                 font-size: 9px;
             }
 
-            .overview-map-card {
-                min-width: 0;
-                min-height: 280px;
+            .user-meta {
+                display: none;
             }
 
-            .overview-map-wrap {
-                height: clamp(260px, 48vh, 420px);
+            main {
+                padding: 0.85rem;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+            }
+
+            .btn-add {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .map-summary-bar {
+                border-radius: 14px;
+                padding: 0.7rem 0.85rem;
+            }
+
+            .simple-map-summary .summary-grid {
+                flex-direction: column;
+            }
+
+            .simple-map-summary .summary-card {
+                min-width: 0;
+            }
+
+            #layout-canvas {
+                min-height: 62vh;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-inner {
+                padding: 0 0.75rem;
+            }
+
+            .brand-logo {
+                width: 36px;
+                height: 36px;
+            }
+
+            .brand-logo img {
+                width: 20px;
+                height: 20px;
+            }
+
+            .profile-btn {
+                width: 36px;
+                height: 36px;
+            }
+
+            .btn-add {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            .simple-map-summary .summary-value {
+                font-size: 18px;
             }
         }
 
@@ -1167,37 +727,32 @@
         .modal-card {
             background: white;
             width: 95vw;
-            max-width: 1200px;
-            height: 80vh;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            /* กว้างเกือบเต็มจอ */
+            max-width: 1400px;
+            height: 90vh;
+            /* สูง 90% ของหน้าจอ */
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            animation: modalSlide 0.22s ease-out;
+            animation: modalSlide 0.3s ease-out;
         }
 
         .modal-header {
-            padding: 0.75rem 1rem;
+            padding: 1.25rem 1.5rem;
             border-bottom: 1px solid var(--slate-100);
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.5rem 0.75rem;
+            align-items: flex-start;
             flex-shrink: 0;
             background: white;
-        }
-
-        .modal-header .header-left {
-            flex: 1 1 220px;
-            min-width: 0;
         }
 
         .modal-body {
             flex: 1;
             overflow-y: auto;
-            padding: 0.75rem 1rem;
+            padding: 1.25rem 1.5rem;
             background: var(--slate-50);
         }
 
@@ -1248,7 +803,7 @@
         .staff-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
+            gap: 12px;
         }
 
         @media (max-width: 1024px) {
@@ -1270,26 +825,18 @@
             .modal-body {
                 padding: 1rem;
             }
-
-            .modal-header {
-                padding: 1rem 1rem 0.9rem;
-            }
-
-            .close-modal {
-                margin-left: 0;
-            }
         }
 
         /* Individual Staff Card */
         .staff-card {
             background: white;
             border: 1px solid var(--slate-100);
-            border-radius: 10px;
-            padding: 8px 10px;
-            transition: box-shadow 0.18s, border-color 0.18s;
+            border-radius: 14px;
+            padding: 1rem 1.1rem;
+            transition: box-shadow 0.2s, border-color 0.2s;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             position: relative;
         }
 
@@ -1530,8 +1077,8 @@
         .modal-toolbar {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 0.5rem 1rem;
+            gap: 10px;
+            padding: 0.75rem 1.5rem;
             border-bottom: 1px solid var(--slate-100);
             background: white;
             flex-shrink: 0;
@@ -1540,14 +1087,14 @@
 
         .search-box {
             flex: 1;
-            min-width: 160px;
+            min-width: 180px;
             display: flex;
             align-items: center;
             gap: 8px;
             background: var(--slate-50);
             border: 1px solid var(--slate-300);
             border-radius: 8px;
-            padding: 6px 10px;
+            padding: 7px 12px;
         }
 
         .search-box input {
@@ -1558,12 +1105,6 @@
             outline: none;
             width: 100%;
             font-family: inherit;
-        }
-
-        .search-box:focus-within {
-            box-shadow: 0 4px 14px rgba(15,23,42,0.06);
-            border-color: rgba(128,0,0,0.12);
-            background: #fff;
         }
 
         .staff-count-badge {
@@ -1590,22 +1131,22 @@
 
         .shift-selector {
             background: var(--slate-100);
-            padding: 3px;
-            border-radius: 8px;
+            padding: 4px;
+            border-radius: 10px;
             display: flex;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .shift-btn {
             border: none;
             width: 100%;
             background: transparent;
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 12px;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.15s;
+            transition: 0.2s;
             font-family: inherit;
             color: var(--slate-500);
         }
@@ -1613,7 +1154,7 @@
         .shift-btn.active {
             background: white;
             color: var(--maroon);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         /* ─── Sub-map selector (เช่น QC ที่มีหลาย Quality Gate ย่อย) ─── */
@@ -1653,19 +1194,19 @@
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .process-btn {
             border: 1px solid var(--slate-300);
             background: white;
             color: var(--slate-700);
-            padding: 4px 10px;
-            border-radius: 999px;
+            padding: 5px 12px;
+            border-radius: 99px;
             font-size: 12px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.15s;
+            transition: 0.2s;
             font-family: inherit;
         }
 
@@ -1743,8 +1284,6 @@
             cursor: pointer;
             line-height: 1;
             padding: 0 4px;
-            flex-shrink: 0;
-            margin-left: auto;
         }
 
         .close-modal:hover {
@@ -1878,14 +1417,9 @@
 
         .overview-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
-            gap: 10px;
-        }
-
-        .overview-header > div {
-            flex: 1 1 auto;
-            min-width: 0;
+            gap: 16px;
         }
 
         .overview-staff-list-btn {
@@ -1893,13 +1427,13 @@
             align-items: center;
             gap: 8px;
             flex: 0 0 auto;
-            padding: 7px 10px;
+            padding: 9px 14px;
             border: 1px solid var(--maroon-border);
             border-radius: 8px;
             background: var(--white);
             color: var(--maroon);
             font: inherit;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             cursor: pointer;
         }
@@ -1916,7 +1450,6 @@
 
             .overview-staff-list-btn {
                 justify-content: center;
-                width: 100%;
             }
         }
 
@@ -1924,58 +1457,53 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            font-size: 11px;
-            color: var(--slate-600);
-            background: #ffffff;
-            border: 1px solid rgba(128, 0, 0, 0.12);
-            border-radius: 10px;
-            padding: 6px 10px;
+            font-size: 12.5px;
+            color: var(--slate-500);
+            background: #FAF7F2;
+            border: 1px dashed rgba(128, 0, 0, 0.25);
+            border-radius: 8px;
+            padding: 8px 12px;
         }
 
         .overview-hint b {
             color: var(--maroon);
         }
 
-        .overview-header h2 {
-            font-size: 16px;
-            margin: 0;
-            line-height: 1.1;
-        }
-
-        .overview-header p {
-            margin: 0;
-            font-size: 12px;
-            color: var(--slate-500);
-            line-height: 1.2;
-        }
-
         .overview-columns {
             display: grid;
             grid-template-columns: minmax(0, 1fr);
             align-items: stretch;
-            gap: clamp(10px, 1.1vw, 16px);
+            gap: clamp(12px, 1.25vw, 20px);
             min-height: 0;
-            width: 100%;
-            max-width: 1240px;
-            margin: 0 auto;
         }
 
         .overview-map-card {
             background: var(--white);
-            border: 1px solid rgba(128, 0, 0, 0.12);
-            border-radius: 14px;
-            padding: clamp(10px, 1vw, 12px);
-            box-shadow: 0 6px 14px rgba(15, 23, 42, 0.045);
-            min-width: 260px;
+            border: 1px solid var(--maroon-border);
+            border-radius: 16px;
+            padding: clamp(12px, 1.25vw, 20px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+            min-width: 320px;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: clamp(280px, 40vh, 420px);
-            width: 100%;
+            min-height: clamp(360px, 58vh, 660px);
         }
 
         .overview-zone-panel {
             display: none;
+            background: var(--white);
+            border: 1px solid var(--slate-300);
+            border-radius: 16px;
+            padding: clamp(12px, 1.25vw, 20px);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+            max-width: 380px;
+            align-self: stretch;
+            /* The zone-list column is intentionally hidden; zones remain selectable on the map. */
+            display: none;
+            flex-direction: column;
+            min-width: 280px;
+            min-height: clamp(360px, 58vh, 660px);
         }
 
         .zone-panel-header {
@@ -2214,18 +1742,16 @@
         }
 
         .btn-back-overview {
-            background: white;
+            background: var(--white);
             color: var(--maroon);
-            border: 1px solid rgba(128, 0, 0, 0.22);
-            padding: 12px 18px;
-            border-radius: 12px;
+            border: 1px solid var(--maroon-border);
+            padding: 10px 16px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 8px;
-            max-width: fit-content;
-            box-shadow: 0 4px 16px rgba(128, 0, 0, 0.08);
         }
 
         .btn-back-overview:hover {
@@ -2297,7 +1823,28 @@
     </header>
 
     <main>
-        <div class="zone-shift-summary top-zone-summary" id="zoneShiftSummary" aria-live="polite"></div>
+        <div class="simple-map-summary" aria-live="polite">
+            <div class="summary-title">สรุปข้อมูลแผนผัง</div>
+            <div class="summary-grid">
+                <div class="summary-card accent" style="grid-column: 1 / -1;">
+                    <div class="summary-label">พนักงานรวมทุก Process</div>
+                    <div class="summary-value" id="simpleTotalCount">0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">ทุก Process · White</div>
+                    <div class="summary-value" id="simplePlacedWhiteCount">0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">ทุก Process · Yellow</div>
+                    <div class="summary-value" id="simplePlacedYellowCount">0</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">ทุก Process · Newcomer</div>
+                    <div class="summary-value" id="simplePlacedNewcomerCount">0</div>
+                </div>
+            </div>
+            <div class="zone-shift-summary" id="zoneShiftSummary"></div>
+        </div>
 
         <!-- ══════════════════════════════════════════════════════════════
              Factory Overview screen (ported from program 2 / manpower_map.html)
@@ -2338,77 +1885,62 @@
         </div>
 
         <div id="zoneView" style="display: flex; flex-direction: column; flex: 1 1 0%; min-height: 0px;">
-            <div class="controls">
-                <div class="controls-left">
-                    <button class="btn-back-overview" onclick="goToOverview()" style="margin-bottom: 10px;">
-                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M19 12H5M12 19l-7-7 7-7"></path>
-                        </svg>
-                        กลับผังโรงงาน
-                    </button>
-                    <h2 id="zoneTitle" style="font-weight: 700; color: var(--slate-900);">Logistics Manpower Map</h2>
-                    <div class="map-shift-switch" aria-label="เลือกแผนผังตามกะ">
-                        <button id="btnMapShiftWhite" type="button" class="active" onclick="switchMapShift('White')">White</button>
-                        <button id="btnMapShiftYellow" type="button" onclick="switchMapShift('Yellow')">Yellow</button>
-                    </div>
-                    <p id="hintText" style="font-size: 13px; color: var(--slate-500);">คลิกปุ่มด้านขวา แล้วคลิกบนแผนที่เพื่อวางตำแหน่งพนักงาน/ของ (ลากเพื่อเลื่อนดูแผนที่)</p>
-                    <div id="submapBar" class="submap-bar" style="display: none;"></div>
-                    <div class="panel-actions">
-                        <button class="control-btn btn-list" onclick="toggleStaffModal(true)">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M4 6h16M4 12h16M4 18h16"></path>
-                            </svg>
-                            ดูรายชื่อ
-                        </button>
-                        <button class="control-btn btn-add" id="btnFit" onclick="fitToScreen()">
-                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-                            </svg>
-                            Fit หน้าจอ
-                        </button>
-                    </div>
-
-                    <div class="panel-summary">
-                        <div class="summary-line">
-                            <span class="summary-meta"><span class="summary-icon">📍</span>บนแผนผังนี้</span>
-                            <strong id="mapPlacedCount">0</strong>
-                        </div>
-                        <div class="summary-line">
-                            <span class="summary-meta"><span class="summary-icon">👥</span>พนักงานใน Process นี้</span>
-                            <strong id="mapTotalCount">0</strong>
-                        </div>
-                        <div class="summary-line">
-                            <span class="summary-meta"><span class="summary-icon">⚪</span>White</span>
-                            <strong id="mapPlacedWhiteCount">0</strong>
-                        </div>
-                        <div class="summary-line">
-                            <span class="summary-meta"><span class="summary-icon">🟡</span>Yellow</span>
-                            <strong id="mapPlacedYellowCount">0</strong>
-                        </div>
-                        <div class="summary-line">
-                            <span class="summary-meta"><span class="summary-icon">🆕</span>Newcomer</span>
-                            <strong id="mapPlacedNewcomerCount">0</strong>
-                        </div>
-                        <div class="summary-line">
-                            <span class="summary-meta"><span class="summary-icon">💾</span>บันทึกแล้ว</span>
-                            <strong id="manpowerSaveStatus">กำลังโหลด...</strong>
-                        </div>
-                    </div>
-
-                    <button class="control-btn btn-secondary report-btn" onclick="toggleStaffModal(true)">
-                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>
-                        Report
-                    </button>
+        <div class="controls">
+            
+            <div>
+                <button class="btn-back-overview" onclick="goToOverview()" style="margin-bottom: 10px;">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                    </svg>
+                    กลับผังโรงงาน
+                </button>
+                <h2 id="zoneTitle" style="font-weight: 700; color: var(--slate-900);">Logistics Manpower Map</h2>
+                <div class="map-shift-switch" aria-label="เลือกแผนผังตามกะ">
+                    <button id="btnMapShiftWhite" type="button" class="active" onclick="switchMapShift('White')">White</button>
+                    <button id="btnMapShiftYellow" type="button" onclick="switchMapShift('Yellow')">Yellow</button>
                 </div>
+                <p id="hintText" style="font-size: 13px; color: var(--slate-500);">คลิกปุ่มด้านขวา แล้วคลิกบนแผนที่เพื่อวางตำแหน่งพนักงาน/ของ (ลากเพื่อเลื่อนดูแผนที่)</p>
+                <div id="submapBar" class="submap-bar" style="display: none;"></div>
             </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 8px; min-width: 220px; align-items: stretch;">
+                <button class="btn-list" onclick="toggleStaffModal(true)" style="background: var(--white); color: var(--maroon); border: 1px solid var(--maroon-border); padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; width: 100%; justify-content: flex-start;">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    ดูรายชื่อ
+                </button>
 
-            <div id="staffModal" class="modal-overlay" style="display: none;">
+                <button class="btn-add" id="btnFit" onclick="fitToScreen()" style="background: var(--white); color: var(--maroon); border: 1px solid var(--maroon-border); padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; width: 100%; justify-content: flex-start;">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                    </svg>
+                    Fit หน้าจอ
+                </button>
+
+                <div class="map-summary-bar" aria-live="polite">
+                    <span class="count-pill">📍 บนแผนผังนี้: <strong id="mapPlacedCount">0</strong></span>
+                    <span class="count-pill">👥 พนักงานใน Process นี้: <strong id="mapTotalCount">0</strong></span>
+                    <span class="count-pill">⚪ White: <strong id="mapPlacedWhiteCount">0</strong></span>
+                    <span class="count-pill">🟡 Yellow: <strong id="mapPlacedYellowCount">0</strong></span>
+                    <span class="count-pill">🆕 Newcomer: <strong id="mapPlacedNewcomerCount">0</strong></span>
+                    <span id="manpowerSaveStatus" class="count-pill" aria-live="polite">กำลังโหลดข้อมูลผัง...</span>
+                </div>
+                <!-- เพิ่มตรงนี้ในส่วน controls -->
+<button class="btn-list" onclick="toggleStaffModal(true)" style="background: var(--white); color: #0f172a; border: 1px solid var(--slate-300); padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; width: 100%; justify-content: flex-start;">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+        <polyline points="10 9 9 9 8 9"></polyline>
+    </svg>
+    Report
+</button>
+            </div>
+        </div>
+
+        <div id="staffModal" class="modal-overlay" style="display: none;">
             <div class="modal-card">
                 <div class="modal-header">
                     <div class="header-left">
@@ -2469,7 +2001,7 @@
                                 <h3 id="staffFormTitle" style="font-size: 1.1rem; font-weight: 700;">เพิ่มรายชื่อพนักงานใหม่</h3>
                                 <p id="staffFormSubtitle" style="font-size: 12px; color: var(--slate-500); margin-top: 2px;">กรอกข้อมูลพนักงานให้ครบถ้วน</p>
                             </div>
-                            <button class="close-modal" type="button" onclick="closeAddStaffForm()" aria-label="ปิด">×</button>
+                            <button class="close-modal" onclick="closeAddStaffForm()">×</button>
                         </div>
                 
                         <div class="modal-body" style="padding: 20px; overflow-y: auto;">
@@ -3453,26 +2985,21 @@ function closeReportModal() {
             });
 
             container.innerHTML = `
-                <div class="summary-subtitle">แยกตาม Process & Shift</div>
+                <div class="summary-subtitle">แยกตาม Process และกะ</div>
                 <div class="summary-list">
-                    ${rows.map(row => {
-                        const total = (row.yellow||0) + (row.white||0) + (row.newcomer||0);
-                        return `
-                        <div class="summary-row" data-process="${escapeAttr(row.zone)}" role="button" tabindex="0" aria-label="เปิดแผนผัง Process ${escapeAttr(row.zone)}" title="${escapeAttr(row.zone)} — Yellow:${row.yellow}, White:${row.white}, Newcomer:${row.newcomer}" style="--process-color: ${escapeHtml(row.color)};">
-                            <div class="summary-header">
-                                <div class="summary-zone" title="${escapeAttr(row.zone)}">
-                                    <span class="summary-zone-dot" aria-hidden="true"></span>
-                                    <span>${escapeHtml(row.zone)}</span>
-                                </div>
+                    ${rows.map(row => `
+                        <div class="summary-row" data-process="${escapeAttr(row.zone)}" role="button" tabindex="0" aria-label="เปิดแผนผัง Process ${escapeAttr(row.zone)}" style="--process-color: ${escapeHtml(row.color)};">
+                            <div class="summary-zone">
+                                <span class="summary-zone-dot" aria-hidden="true"></span>
+                                <span>${escapeHtml(row.zone)}</span>
                             </div>
-                            <!-- total removed per user request -->
                             <div class="summary-badges">
-                                <span class="summary-badge yellow" title="Yellow: ${row.yellow}"><span class="badge-num">${row.yellow}</span><span class="badge-label">Yellow</span></span>
-                                <span class="summary-badge white" title="White: ${row.white}"><span class="badge-num">${row.white}</span><span class="badge-label">White</span></span>
-                                <span class="summary-badge newcomer full" title="Newcomer: ${row.newcomer}"><span class="badge-num">${row.newcomer}</span><span class="badge-label">Newcomer</span></span>
+                                <span class="summary-badge yellow">Yellow ${row.yellow}</span>
+                                <span class="summary-badge white">White ${row.white}</span>
+                                <span class="summary-badge newcomer">Newcomer ${row.newcomer}</span>
                             </div>
                         </div>
-                    `}).join('')}
+                    `).join('')}
                 </div>
             `;
 
@@ -3942,14 +3469,6 @@ function closeReportModal() {
             if (show) {
                 clearStaffSelection();
                 loadStaffData();
-                // focus search box for faster filtering
-                setTimeout(() => {
-                    const input = document.getElementById('staffSearch');
-                    if (input) {
-                        input.focus();
-                        input.select && input.select();
-                    }
-                }, 80);
             }
         }
 

@@ -1222,6 +1222,6 @@ if __name__ == "__main__":
         print("!! ยังไม่ได้ตั้งค่า FLASK_SECRET_KEY — โหมดนี้ใช้ทดสอบเท่านั้น ห้ามใช้ใน production !!")
     print("=" * 60)
     # debug=False เสมอ: ห้ามเปิด debug mode ใน production (จะเปิดช่องให้รันโค้ดจากภายนอกได้ผ่าน debugger)
-    debug_mode = os.environ.get("FLASK_DEBUG", "0") == "1"
     port = int(os.environ.get("PORT", 5000))
+    debug_mode = os.environ.get("FLASK_DEBUG", "0") == "1"
     app.run(host="0.0.0.0", port=port, debug=debug_mode)
