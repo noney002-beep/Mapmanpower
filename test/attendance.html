@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ข้อมูลการขาดงาน — (W) Manpower Map</title>
+<style>
+    :root {
+        --maroon: #800000;
+        --maroon-dark: #5a0000;
+        --maroon-light: #a00000;
+        --maroon-muted: rgba(128, 0, 0, 0.08);
+        --maroon-border: rgba(128, 0, 0, 0.2);
+        --slate-900: #0f172a;
+        --slate-700: #334155;
+        --slate-500: #64748b;
+        --slate-300: #cbd5e1;
+        --slate-100: #f1f5f9;
+        --slate-50: #f8fafc;
+        --white: #ffffff;
+        --bg: #faf8f6;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        font-family: 'Segoe UI', 'Sarabun', system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--slate-900);
+    }
+    header {
+        background: var(--white);
+        border-bottom: 1px solid var(--slate-300);
+        padding: 14px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    header .brand { font-weight: 700; color: var(--maroon); font-size: 1.05rem; text-decoration: none; }
+    header .brand span.sub { display: block; font-size: 12px; font-weight: 500; color: var(--slate-500); }
+    header a.back-link {
+        color: var(--maroon); text-decoration: none; font-weight: 600; font-size: 13px;
+        display: flex; align-items: center; gap: 6px;
+    }
+    main { max-width: 1200px; margin: 0 auto; padding: 24px; }
+    h1 { font-size: 1.4rem; margin: 0 0 4px 0; color: var(--slate-900); }
+    p.subtitle { color: var(--slate-500); font-size: 13px; margin: 0 0 20px 0; }
+
+    .grid { display: grid; grid-template-columns: 380px 1fr; gap: 20px; align-items: start; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+        background: var(--white); border: 1px solid var(--slate-300); border-radius: 12px;
+        padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .card h2 { font-size: 1rem; margin: 0 0 14px 0; color: var(--slate-900); }
+
+    label { display: block; font-size: 12px; font-weight: 600; color: var(--slate-700); margin: 10px 0 4px; }
+    select, input[type=date], input[type=text], input[type=month] {
+        width: 100%; padding: 9px 10px; border: 1px solid var(--slate-300); border-radius: 8px;
+        font-size: 14px; font-family: inherit; background: var(--white); color: var(--slate-900);
+    }
+    select:focus, input:focus { outline: none; border-color: var(--maroon); }
+
+    .btn-primary {
+        margin-top: 16px; width: 100%; padding: 10px 16px; background: var(--maroon); color: var(--white);
+        border: none; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--maroon-dark); }
+    .btn-primary:disabled { background: var(--slate-300); cursor: not-allowed; }
+
+    .msg { font-size: 13px; margin-top: 10px; padding: 8px 10px; border-radius: 8px; display: none; }
+    .msg.error { background: #fdecec; color: #a02b2b; display: block; }
+    .msg.success { background: #eaf7ee; color: #1c7a3a; display: block; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--slate-100); }
+    th { color: var(--slate-500); font-weight: 600; font-size: 12px; text-transform: uppercase; }
+    tr:hover td { background: var(--slate-50); }
+    .type-badge {
+        display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: 600;
+        background: var(--maroon-muted); color: var(--maroon);
+    }
+    .del-btn {
+        border: none; background: transparent; color: var(--slate-500); cursor: pointer; font-size: 16px;
+    }
+    .del-btn:hover { color: var(--maroon); }
+
+    .toolbar { display: flex; gap: 10px; align-items: flex-end; margin-bottom: 14px; flex-wrap: wrap; }
+    .toolbar > div { flex: 1 1 160px; }
+    .empty-hint { color: var(--slate-500); font-size: 13px; padding: 20px 0; text-align: center; }
+
+    .employee-search-result {
+        border: 1px solid var(--maroon-border); border-radius: 10px; padding: 12px 14px;
+        background: var(--maroon-muted);
+    }
+    .employee-search-result h3 { margin: 0 0 8px; color: var(--maroon); font-size: 14px; }
+    .employee-search-result .employee-details { display: flex; gap: 8px 18px; flex-wrap: wrap; font-size: 13px; }
+    .employee-search-result .employee-details span { color: var(--slate-700); }
+    .employee-search-result .employee-details b { color: var(--slate-900); }
+    .employee-search-result .no-attendance { margin: 10px 0 0; color: var(--slate-500); font-size: 12px; }
+
+    .summary-total { font-weight: 700; color: var(--maroon); }
+</style>
+</head>
+<body>
+
+<header>
+    <a class="brand" href="main.html">
+        Toyota BanPho Plant
+        <span class="sub">(W) Manpower Map</span>
+    </a>
+    <a class="back-link" href="main.html">&larr; กลับหน้าแผนผังโรงงาน</a>
+</header>
+
+<main>
+    <h1>ข้อมูลการขาดงาน</h1>
+    <p class="subtitle">บันทึกและสรุปข้อมูลการขาด/ลา/สาย ของพนักงานแต่ละคน (ดึงข้อมูลจากฐานข้อมูลจริง เชื่อมกับระบบเดียวกับรายชื่อพนักงาน)</p>
+
+    <div class="grid">
+        <!-- ── ฟอร์มบันทึกการขาดงาน ── -->
+        <div class="card">
+            <h2>+ บันทึกรายการขาด/ลา</h2>
+            <form id="attForm">
+                <label for="empSelect">พนักงาน</label>
+                <select id="empSelect" required>
+                    <option value="">-- เลือกพนักงาน --</option>
+                </select>
+
+                <label for="dateInput">วันที่</label>
+                <input type="date" id="dateInput" required>
+
+                <label for="typeSelect">ประเภท</label>
+                <select id="typeSelect" required></select>
+
+                <label for="reasonInput">หมายเหตุ (ไม่บังคับ)</label>
+                <input type="text" id="reasonInput" maxlength="500" placeholder="เช่น ใบรับรองแพทย์, แจ้งล่วงหน้า">
+
+                <button type="submit" class="btn-primary" id="submitBtn">บันทึก</button>
+                <div class="msg" id="formMsg"></div>
+            </form>
+        </div>
+
+        <!-- ── ตารางรายการ + สรุป ── -->
+        <div>
+            <div class="card" style="margin-bottom: 20px;">
+                <h2>รายการขาด/ลาทั้งหมด</h2>
+                <div class="toolbar">
+                    <div>
+                        <label style="margin-top:0;">กรองตามพนักงาน</label>
+                        <select id="filterEmp"><option value="">ทั้งหมด</option></select>
+                    </div>
+                    <div>
+                        <label style="margin-top:0;">กรองตาม Process</label>
+                        <select id="filterProcess"><option value="">ทั้งหมด</option></select>
+                    </div>
+                    <div>
+                        <label style="margin-top:0;">กรองตาม Shift</label>
+                        <select id="filterShift">
+                            <option value="">ทั้งหมด</option>
+                            <option value="White">White</option>
+                            <option value="Yellow">Yellow</option>
+                            <option value="Newcomer">Newcomer</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label style="margin-top:0;">ค้นหาชื่อ/รหัส</label>
+                        <input type="text" id="searchText" placeholder="ค้นหาพนักงาน หรือ EMP ID">
+                    </div>
+                    <div>
+                        <label style="margin-top:0;">กรองตามเดือน</label>
+                        <input type="month" id="filterMonth">
+                    </div>
+                </div>
+                <div id="listWrap">
+                    <div class="empty-hint">กำลังโหลดข้อมูล...</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>สรุปจำนวนวันขาด/ลา ต่อพนักงาน</h2>
+                <div id="summaryWrap">
+                    <div class="empty-hint">กำลังโหลดข้อมูล...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    let allStaff = [];
+    let attendanceTypes = [];
+
+    function h(str) {
+        const d = document.createElement('div');
+        d.textContent = str == null ? '' : String(str);
+        return d.innerHTML;
+    }
+
+    async function checkSession() {
+        try {
+            const res = await fetch('/api/session', { credentials: 'same-origin' });
+            if (!res.ok) throw new Error('no session');
+        } catch (err) {
+            window.location.replace('login.html');
+        }
+    }
+
+    async function loadStaffOptions() {
+        const res = await fetch('/api/get_employee_list', { credentials: 'same-origin' });
+        const empSelect = document.getElementById('empSelect');
+        const filterEmp = document.getElementById('filterEmp');
+        empSelect.innerHTML = '<option value="">-- เลือกพนักงาน --</option>';
+        filterEmp.innerHTML = '<option value="">ทั้งหมด</option>';
+
+        if (!res.ok) {
+            allStaff = [];
+            const opt = document.createElement('option');
+            opt.value = '';
+            opt.textContent = 'ไม่สามารถโหลดรายชื่อพนักงานได้';
+            opt.disabled = true;
+            empSelect.appendChild(opt);
+            return;
+        }
+
+        const staff = await res.json();
+        allStaff = Array.isArray(staff)
+            ? staff.sort((a, b) => (a.TM_Name || '').localeCompare(b.TM_Name || '', 'th'))
+            : [];
+
+        if (allStaff.length === 0) {
+            const opt = document.createElement('option');
+            opt.value = '';
+            opt.textContent = 'ไม่พบพนักงานในระบบ';
+            opt.disabled = true;
+            empSelect.appendChild(opt);
+            return;
+        }
+
+        const processSet = new Set();
+        allStaff.forEach(s => {
+            const label = `${s.TM_Name || s.Emp_ID} (${s.Emp_ID})` +
+                (s.Process_Name ? ` — ${s.Process_Name}` : '') +
+                (s.Shift ? ` · ${s.Shift}` : '');
+            const opt1 = document.createElement('option');
+            opt1.value = s.Emp_ID; opt1.textContent = label;
+            empSelect.appendChild(opt1);
+
+            const opt2 = document.createElement('option');
+            opt2.value = s.Emp_ID; opt2.textContent = label;
+            filterEmp.appendChild(opt2);
+
+            if (s.Process_Name) processSet.add(s.Process_Name);
+        });
+
+        const filterProcess = document.getElementById('filterProcess');
+        filterProcess.innerHTML = '<option value="">ทั้งหมด</option>' +
+            Array.from(processSet).sort((a, b) => a.localeCompare(b, 'th')).map(p =>
+                `<option value="${h(p)}">${h(p)}</option>`
+            ).join('');
+    }
+
+    function staffName(empId) {
+        const s = allStaff.find(x => x.Emp_ID === empId);
+        if (!s) return empId;
+        return `${s.TM_Name || empId}` + (s.Process_Name ? ` — ${s.Process_Name}` : '');
+    }
+
+    function employeeMatchesSearch(query, empId) {
+        if (empId) return allStaff.filter(s => String(s.Emp_ID) === String(empId));
+        if (!query) return [];
+        const needle = query.toLowerCase();
+        return allStaff.filter(s =>
+            String(s.Emp_ID || '').toLowerCase().includes(needle) ||
+            String(s.TM_Name || '').toLowerCase().includes(needle)
+        ).slice(0, 10);
+    }
+
+    function employeeSearchResultHtml(staff) {
+        return `
+            <div class="employee-search-result">
+                <h3>ข้อมูลพนักงานที่ค้นพบ</h3>
+                ${staff.map(s => `
+                    <div class="employee-details">
+                        <span>รหัส: <b>${h(s.Emp_ID)}</b></span>
+                        <span>ชื่อ: <b>${h(s.TM_Name || '-')}</b></span>
+                        <span>Process: <b>${h(s.Process_Name || '-')}</b></span>
+                        <span>Shift: <b>${h(s.Shift || '-')}</b></span>
+                    </div>
+                `).join('')}
+                <p class="no-attendance">ยังไม่มีประวัติการขาด/ลา ตามเงื่อนไขที่เลือก</p>
+            </div>
+        `;
+    }
+
+    function debounce(fn, delay = 250) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fn(...args), delay);
+        };
+    }
+
+    async function loadTypes() {
+        const res = await fetch('/api/attendance/types', { credentials: 'same-origin' });
+        const data = res.ok ? await res.json() : {};
+        attendanceTypes = data.types || [];
+        const sel = document.getElementById('typeSelect');
+        sel.innerHTML = '';
+        if (attendanceTypes.length === 0) {
+            const opt = document.createElement('option');
+            opt.value = 'ขาดงาน';
+            opt.textContent = 'ขาดงาน';
+            sel.appendChild(opt);
+            attendanceTypes = ['ขาดงาน'];
+            return;
+        }
+        attendanceTypes.forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t; opt.textContent = t;
+            sel.appendChild(opt);
+        });
+    }
+
+    async function loadList() {
+        const emp = document.getElementById('filterEmp').value;
+        const process = document.getElementById('filterProcess').value;
+        const shift = document.getElementById('filterShift').value;
+        const query = document.getElementById('searchText').value.trim();
+        const month = document.getElementById('filterMonth').value;
+        const params = new URLSearchParams();
+        if (emp) params.set('emp_id', emp);
+        if (process) params.set('process', process);
+        if (shift) params.set('shift', shift);
+        if (query) params.set('q', query);
+        if (month) params.set('month', month);
+
+        const wrap = document.getElementById('listWrap');
+        try {
+            const res = await fetch(`/api/attendance/list?${params.toString()}`, { credentials: 'same-origin' });
+            if (!res.ok) throw new Error('ไม่สามารถโหลดรายการได้');
+            const data = await res.json();
+
+            if (!data.success || !data.records || data.records.length === 0) {
+                const matchedStaff = employeeMatchesSearch(query, emp);
+                if (matchedStaff.length > 0) {
+                    wrap.innerHTML = employeeSearchResultHtml(matchedStaff);
+                    return;
+                }
+                wrap.innerHTML = '<div class="empty-hint">ยังไม่มีข้อมูลการขาดงานตามเงื่อนไขที่เลือก</div>';
+                return;
+            }
+
+            let rowsHtml = data.records.map(r => `
+                <tr>
+                    <td>${h(r.Date)}</td>
+                    <td>${h(staffName(r.Emp_ID))} <span style="color:var(--slate-500)">(${h(r.Emp_ID)})</span></td>
+                    <td><span class="type-badge">${h(r.Type)}</span></td>
+                    <td>${h(r.Reason || '-')}</td>
+                    <td><button class="del-btn" title="ลบรายการนี้" data-id="${r.AttId}">&times;</button></td>
+                </tr>
+            `).join('');
+
+            wrap.innerHTML = `
+                <table>
+                    <thead><tr><th>วันที่</th><th>พนักงาน</th><th>ประเภท</th><th>หมายเหตุ</th><th></th></tr></thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+            `;
+
+            wrap.querySelectorAll('.del-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteRecord(btn.dataset.id));
+            });
+        } catch (err) {
+            wrap.innerHTML = `<div class="empty-hint">ไม่สามารถโหลดรายการขาดงานได้ กรุณาลองใหม่</div>`;
+            console.error(err);
+        }
+    }
+
+    async function loadSummary() {
+        const emp = document.getElementById('filterEmp').value;
+        const process = document.getElementById('filterProcess').value;
+        const shift = document.getElementById('filterShift').value;
+        const query = document.getElementById('searchText').value.trim();
+        const month = document.getElementById('filterMonth').value;
+        const params = new URLSearchParams();
+        if (emp) params.set('emp_id', emp);
+        if (process) params.set('process', process);
+        if (shift) params.set('shift', shift);
+        if (query) params.set('q', query);
+        if (month) params.set('month', month);
+
+        const wrap = document.getElementById('summaryWrap');
+        try {
+            const res = await fetch(`/api/attendance/summary?${params.toString()}`, { credentials: 'same-origin' });
+            if (!res.ok) throw new Error('ไม่สามารถโหลดสรุปได้');
+            const data = await res.json();
+
+            if (!data.success || !data.summary || data.summary.length === 0) {
+                wrap.innerHTML = '<div class="empty-hint">ยังไม่มีข้อมูลสรุป</div>';
+                return;
+            }
+
+            let rowsHtml = data.summary.map(s => {
+                const typeText = Object.entries(s.byType).map(([t, c]) => `${h(t)} ${c}`).join(', ');
+                return `
+                    <tr>
+                        <td>${h(s.name)} <span style="color:var(--slate-500)">(${h(s.empId)})</span></td>
+                        <td>${h(s.processName || '-')}</td>
+                        <td>${typeText}</td>
+                        <td class="summary-total">${s.total} วัน</td>
+                    </tr>
+                `;
+            }).join('');
+
+            wrap.innerHTML = `
+                <table>
+                    <thead><tr><th>พนักงาน</th><th>Process</th><th>รายละเอียด</th><th>รวม</th></tr></thead>
+                    <tbody>${rowsHtml}</tbody>
+                </table>
+            `;
+        } catch (err) {
+            wrap.innerHTML = `<div class="empty-hint">ไม่สามารถโหลดสรุปได้ กรุณาลองใหม่</div>`;
+            console.error(err);
+        }
+    }
+
+    async function refreshAll() {
+        await Promise.all([loadList(), loadSummary()]);
+    }
+
+    window.addEventListener('focus', async () => {
+        await loadStaffOptions();
+        await refreshAll();
+    });
+
+    async function deleteRecord(attId) {
+        if (!confirm('ต้องการลบรายการนี้ใช่หรือไม่?')) return;
+        try {
+            const res = await fetch('/api/attendance/delete', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                credentials: 'same-origin',
+                body: JSON.stringify({ AttId: attId })
+            });
+            const data = await res.json();
+            if (!data.success) {
+                alert(data.message || 'ลบไม่สำเร็จ');
+                return;
+            }
+            await refreshAll();
+        } catch (err) {
+            alert('ไม่สามารถเชื่อมต่อกับระบบได้');
+        }
+    }
+
+    document.getElementById('attForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const msg = document.getElementById('formMsg');
+        const btn = document.getElementById('submitBtn');
+        msg.className = 'msg';
+        msg.textContent = '';
+
+        const payload = {
+            Emp_ID: document.getElementById('empSelect').value,
+            Date: document.getElementById('dateInput').value,
+            Type: document.getElementById('typeSelect').value,
+            Reason: document.getElementById('reasonInput').value
+        };
+
+        if (!payload.Emp_ID || !payload.Date) {
+            msg.className = 'msg error';
+            msg.textContent = 'กรุณาเลือกพนักงานและระบุวันที่';
+            return;
+        }
+
+        btn.disabled = true;
+        try {
+            const res = await fetch('/api/attendance/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                credentials: 'same-origin',
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (!data.success) {
+                msg.className = 'msg error';
+                msg.textContent = data.message || 'บันทึกไม่สำเร็จ';
+            } else {
+                msg.className = 'msg success';
+                msg.textContent = 'บันทึกข้อมูลสำเร็จ';
+                document.getElementById('reasonInput').value = '';
+                await refreshAll();
+            }
+        } catch (err) {
+            msg.className = 'msg error';
+            msg.textContent = 'ไม่สามารถเชื่อมต่อกับระบบได้';
+        } finally {
+            btn.disabled = false;
+        }
+    });
+
+    const debouncedRefresh = debounce(refreshAll, 250);
+    document.getElementById('filterEmp').addEventListener('change', refreshAll);
+    document.getElementById('filterProcess').addEventListener('change', refreshAll);
+    document.getElementById('filterShift').addEventListener('change', refreshAll);
+    document.getElementById('filterMonth').addEventListener('change', refreshAll);
+    document.getElementById('searchText').addEventListener('input', debouncedRefresh);
+
+    (async function init() {
+        await checkSession();
+        await Promise.all([loadStaffOptions(), loadTypes()]);
+        await refreshAll();
+    })();
+</script>
+
+</body>
+</html>

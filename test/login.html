@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>เข้าสู่ระบบ | (W) Manpower Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --maroon: #800000;
+        --maroon-dark: #5a0000;
+        --maroon-light: #a00000;
+        --maroon-muted: rgba(128, 0, 0, 0.08);
+        --maroon-border: rgba(128, 0, 0, 0.2);
+        --slate-900: #0f172a;
+        --slate-700: #334155;
+        --slate-500: #64748b;
+        --slate-300: #cbd5e1;
+        --slate-100: #f1f5f9;
+        --slate-50: #f8fafc;
+        --white: #ffffff;
+        --bg: #faf8f6;
+        --danger: #dc2626;
+        --success: #22c55e;
+    }
+
+    html, body {
+        height: 100%;
+    }
+
+    body {
+        font-family: 'Sora', 'Noto Sans Thai', sans-serif;
+        background: var(--bg);
+        color: var(--slate-900);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        padding: 24px;
+    }
+
+    /* ─── Dot grid background ─── */
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: radial-gradient(circle, rgba(128, 0, 0, 0.06) 1px, transparent 1px);
+        background-size: 28px 28px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    /* Soft ambient glow */
+    body::after {
+        content: '';
+        position: fixed;
+        top: -20%;
+        right: -10%;
+        width: 560px;
+        height: 560px;
+        background: radial-gradient(circle, rgba(128, 0, 0, 0.10), transparent 65%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .login-wrap {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    /* ─── Brand ─── */
+    .brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+    .brand-logo {
+        width: 48px;
+        height: 48px;
+        background: var(--maroon);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 14px rgba(128, 0, 0, 0.35);
+    }
+
+    .brand-logo svg {
+        width: 26px;
+        height: 26px;
+        color: white;
+    }
+
+    .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.15;
+        text-align: left;
+    }
+
+    .brand-text .label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--maroon);
+    }
+
+    .brand-text .title {
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--slate-900);
+        letter-spacing: -0.01em;
+    }
+
+    /* ─── Card ─── */
+    .card {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(128, 0, 0, 0.1);
+        border-radius: 20px;
+        padding: 36px 32px 30px;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.10);
+    }
+
+    .card-heading {
+        margin-bottom: 26px;
+    }
+
+    .card-heading h1 {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--slate-900);
+        letter-spacing: -0.01em;
+        margin-bottom: 6px;
+    }
+
+    .card-heading p {
+        font-size: 13.5px;
+        color: var(--slate-500);
+        font-weight: 500;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .field label {
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--slate-700);
+        letter-spacing: 0.01em;
+    }
+
+    .input-shell {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-shell svg {
+        position: absolute;
+        left: 14px;
+        width: 18px;
+        height: 18px;
+        color: var(--slate-500);
+        pointer-events: none;
+        transition: color 0.2s;
+    }
+
+    .input-shell input {
+        width: 100%;
+        padding: 12px 14px 12px 42px;
+        font-family: inherit;
+        font-size: 14.5px;
+        color: var(--slate-900);
+        background: var(--slate-50);
+        border: 1.5px solid var(--slate-300);
+        border-radius: 10px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .input-shell input::placeholder {
+        color: #94a3b8;
+    }
+
+    .input-shell input:focus {
+        border-color: var(--maroon);
+        background: var(--white);
+        box-shadow: 0 0 0 3.5px var(--maroon-muted);
+    }
+
+    .input-shell input:focus ~ svg {
+        color: var(--maroon);
+    }
+
+    .toggle-visibility {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--slate-500);
+        padding: 4px;
+        display: flex;
+        border-radius: 6px;
+        transition: color 0.2s;
+    }
+
+    .toggle-visibility:hover {
+        color: var(--maroon);
+    }
+
+    .toggle-visibility svg {
+        position: static;
+        width: 18px;
+        height: 18px;
+    }
+
+    .row-between {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: -4px;
+    }
+
+    .remember {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .remember input[type="checkbox"] {
+        appearance: none;
+        width: 17px;
+        height: 17px;
+        border: 1.5px solid var(--slate-300);
+        border-radius: 5px;
+        cursor: pointer;
+        position: relative;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+
+    .remember input[type="checkbox"]:checked {
+        background: var(--maroon);
+        border-color: var(--maroon);
+    }
+
+    .remember input[type="checkbox"]:checked::after {
+        content: '';
+        position: absolute;
+        left: 5px;
+        top: 1px;
+        width: 4px;
+        height: 8px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+
+    .remember span {
+        font-size: 12.5px;
+        color: var(--slate-700);
+        font-weight: 500;
+    }
+
+    .forgot-link {
+        font-size: 12.5px;
+        color: var(--maroon);
+        font-weight: 600;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .forgot-link:hover {
+        color: var(--maroon-dark);
+        text-decoration: underline;
+    }
+
+    .btn-login {
+        margin-top: 6px;
+        background: var(--maroon);
+        color: white;
+        border: none;
+        padding: 13px 20px;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 14.5px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 8px 18px rgba(128, 0, 0, 0.28);
+        transition: background 0.2s, transform 0.12s, box-shadow 0.2s;
+    }
+
+    .btn-login:hover {
+        background: var(--maroon-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(128, 0, 0, 0.34);
+    }
+
+    .btn-login:active {
+        transform: translateY(0);
+    }
+
+    .btn-login:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .btn-login svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .spinner {
+        width: 16px;
+        height: 16px;
+        border: 2.5px solid rgba(255, 255, 255, 0.4);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: none;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .error-box {
+        display: none;
+        align-items: flex-start;
+        gap: 8px;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: var(--danger);
+        font-size: 12.5px;
+        font-weight: 600;
+        padding: 10px 12px;
+        border-radius: 9px;
+    }
+
+    .error-box svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    .divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 4px 0;
+    }
+
+    .divider::before, .divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--slate-300);
+    }
+
+    .divider span {
+        font-size: 11px;
+        color: var(--slate-500);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .footer-note {
+        text-align: center;
+        margin-top: 22px;
+        font-size: 12px;
+        color: var(--slate-500);
+        font-weight: 500;
+    }
+
+    .footer-note strong {
+        color: var(--slate-700);
+    }
+
+    @media (max-width: 420px) {
+        .card {
+            padding: 28px 22px 24px;
+            border-radius: 16px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="login-wrap">
+
+    <div class="brand">
+        <div class="brand-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+        </div>
+        <div class="brand-text">
+            <span class="label">Manpower Map</span>
+            <span class="title">ระบบบริหารกำลังคน</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-heading">
+            <h1>เข้าสู่ระบบ</h1>
+            <p>กรอกรหัสพนักงานและรหัสผ่านเพื่อเข้าทำงาน</p>
+        </div>
+
+        <div id="errorBox" class="error-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="errorText">รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง</span>
+        </div>
+
+        <form id="loginForm" autocomplete="off">
+            <div class="field">
+                <label for="empId">รหัสพนักงาน</label>
+                <div class="input-shell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <input type="text" id="empId" name="empId" placeholder="เช่น EMP0021" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="password">รหัสผ่าน</label>
+                <div class="input-shell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <input type="password" id="password" name="password" placeholder="กรอกรหัสผ่าน" required>
+                    <button type="button" class="toggle-visibility" id="togglePw" aria-label="แสดงรหัสผ่าน">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div class="row-between">
+                <label class="remember">
+                    <input type="checkbox" id="remember">
+                    <span>จดจำฉันไว้</span>
+                </label>
+                <a href="#" class="forgot-link" id="forgotLink">ลืมรหัสผ่าน?</a>
+            </div>
+
+            <button type="submit" class="btn-login" id="loginBtn">
+                <span class="spinner" id="spinner"></span>
+                <svg id="loginIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                    <polyline points="10 17 15 12 10 7"></polyline>
+                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                </svg>
+                <span id="loginBtnText">เข้าสู่ระบบ</span>
+            </button>
+        </form>
+    </div>
+
+    <p class="footer-note">ยังไม่มีบัญชี? <a href="register.html" style="color: var(--maroon); font-weight: 700; text-decoration: none;">สมัครบัญชี</a></p>
+    <p class="footer-note">พบปัญหาการเข้าใช้งาน ติดต่อ <strong>ฝ่าย IT</strong></p>
+</div>
+
+<script>
+    const form = document.getElementById('loginForm');
+    const empIdInput = document.getElementById('empId');
+    const pwInput = document.getElementById('password');
+    const togglePw = document.getElementById('togglePw');
+    const loginBtn = document.getElementById('loginBtn');
+    const spinner = document.getElementById('spinner');
+    const loginIcon = document.getElementById('loginIcon');
+    const loginBtnText = document.getElementById('loginBtnText');
+    const errorBox = document.getElementById('errorBox');
+    const errorText = document.getElementById('errorText');
+
+    // สลับแสดง/ซ่อนรหัสผ่าน
+    togglePw.addEventListener('click', () => {
+        const isPassword = pwInput.type === 'password';
+        pwInput.type = isPassword ? 'text' : 'password';
+    });
+
+    function showError(message) {
+        errorText.textContent = message;
+        errorBox.style.display = 'flex';
+    }
+
+    function hideError() {
+        errorBox.style.display = 'none';
+    }
+
+    function setLoading(isLoading) {
+        loginBtn.disabled = isLoading;
+        spinner.style.display = isLoading ? 'inline-block' : 'none';
+        loginIcon.style.display = isLoading ? 'none' : 'block';
+        loginBtnText.textContent = isLoading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ';
+    }
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        hideError();
+
+        const empId = empIdInput.value.trim();
+        const password = pwInput.value;
+
+        if (!empId || !password) {
+            showError('กรุณากรอกรหัสพนักงานและรหัสผ่านให้ครบถ้วน');
+            return;
+        }
+
+        setLoading(true);
+
+        // ยืนยันตัวตนกับ Server เท่านั้น — ไม่มีรหัสผ่านลัด/โหมดออฟไลน์อีกต่อไป
+        // Server ตั้งค่า session ผ่าน httpOnly cookie ให้เอง (JS ฝั่ง client อ่านไม่ได้ กัน XSS ขโมย session)
+        try {
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    Emp_ID: empId,
+                    password: password,
+                    remember: document.getElementById('remember').checked
+                })
+            });
+
+            const data = await response.json().catch(() => null);
+
+            if (response.ok && data && data.success) {
+                // เก็บไว้แค่แสดงผล UI (ชื่อ/role) เท่านั้น ไม่ใช่กลไกยืนยันตัวตนจริง —
+                // การยืนยันตัวตนจริงตรวจกับ server ทุกครั้งผ่าน /api/session
+                if (data.user) {
+                    sessionStorage.setItem('mpm_display', JSON.stringify(data.user));
+                }
+                window.location.href = data.redirect || 'main.html';
+                return;
+            }
+
+            if (response.status === 429) {
+                showError('พยายามเข้าสู่ระบบถี่เกินไป กรุณารอสักครู่แล้วลองใหม่');
+            } else {
+                showError((data && data.message) ? data.message : 'รหัสพนักงานหรือรหัสผ่านไม่ถูกต้อง');
+            }
+        } catch (err) {
+            console.warn('เข้าสู่ระบบไม่สำเร็จ:', err);
+            showError('ไม่สามารถเชื่อมต่อกับระบบได้ กรุณาลองใหม่อีกครั้ง');
+        } finally {
+            setLoading(false);
+        }
+    });
+
+    // ถ้าเคย Login ไว้แล้วจริง (session ยังไม่หมดอายุฝั่ง server) ให้พาไปหน้า main.html ทันที
+    (async function checkExistingSession() {
+        try {
+            const res = await fetch('/api/session', { credentials: 'same-origin' });
+            if (res.ok) {
+                window.location.href = 'main.html';
+            }
+        } catch (err) {
+            // ไม่มี server ตอบกลับ ก็แค่แสดงหน้า login ตามปกติ
+        }
+    })();
+
+    document.getElementById('forgotLink').addEventListener('click', function (e) {
+        e.preventDefault();
+        alert('กรุณาติดต่อฝ่าย IT เพื่อขอรีเซ็ตรหัสผ่าน');
+    });
+</script>
+
+</body>
+</html>
