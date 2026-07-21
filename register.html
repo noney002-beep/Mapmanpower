@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>สมัครบัญชี | (W) Manpower Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    :root {
+        --maroon: #800000;
+        --maroon-dark: #5a0000;
+        --maroon-light: #a00000;
+        --maroon-muted: rgba(128, 0, 0, 0.08);
+        --maroon-border: rgba(128, 0, 0, 0.2);
+        --slate-900: #0f172a;
+        --slate-700: #334155;
+        --slate-500: #64748b;
+        --slate-300: #cbd5e1;
+        --slate-100: #f1f5f9;
+        --slate-50: #f8fafc;
+        --white: #ffffff;
+        --bg: #faf8f6;
+        --danger: #dc2626;
+        --success: #22c55e;
+    }
+
+    html, body {
+        height: 100%;
+    }
+
+    body {
+        font-family: 'Sora', 'Noto Sans Thai', sans-serif;
+        background: var(--bg);
+        color: var(--slate-900);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        padding: 24px;
+    }
+
+    body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: radial-gradient(circle, rgba(128, 0, 0, 0.06) 1px, transparent 1px);
+        background-size: 28px 28px;
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    body::after {
+        content: '';
+        position: fixed;
+        top: -20%;
+        right: -10%;
+        width: 560px;
+        height: 560px;
+        background: radial-gradient(circle, rgba(128, 0, 0, 0.10), transparent 65%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .login-wrap {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 28px;
+    }
+
+    .brand-logo {
+        width: 48px;
+        height: 48px;
+        background: var(--maroon);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        box-shadow: 0 4px 14px rgba(128, 0, 0, 0.35);
+    }
+
+    .brand-logo svg {
+        width: 26px;
+        height: 26px;
+        color: white;
+    }
+
+    .brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.15;
+        text-align: left;
+    }
+
+    .brand-text .label {
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--maroon);
+    }
+
+    .brand-text .title {
+        font-size: 17px;
+        font-weight: 800;
+        color: var(--slate-900);
+        letter-spacing: -0.01em;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(128, 0, 0, 0.1);
+        border-radius: 20px;
+        padding: 36px 32px 30px;
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.10);
+    }
+
+    .card-heading {
+        margin-bottom: 26px;
+    }
+
+    .card-heading h1 {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--slate-900);
+        letter-spacing: -0.01em;
+        margin-bottom: 6px;
+    }
+
+    .card-heading p {
+        font-size: 13.5px;
+        color: var(--slate-500);
+        font-weight: 500;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+    }
+
+    .field label {
+        font-size: 12.5px;
+        font-weight: 700;
+        color: var(--slate-700);
+        letter-spacing: 0.01em;
+    }
+
+    .hint {
+        font-size: 11.5px;
+        color: var(--slate-500);
+        font-weight: 500;
+    }
+
+    .input-shell {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-shell svg {
+        position: absolute;
+        left: 14px;
+        width: 18px;
+        height: 18px;
+        color: var(--slate-500);
+        pointer-events: none;
+        transition: color 0.2s;
+    }
+
+    .input-shell input,
+    .input-shell select {
+        width: 100%;
+        padding: 12px 14px 12px 42px;
+        font-family: inherit;
+        font-size: 14.5px;
+        color: var(--slate-900);
+        background: var(--slate-50);
+        border: 1.5px solid var(--slate-300);
+        border-radius: 10px;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+        appearance: none;
+    }
+
+    .input-shell select {
+        cursor: pointer;
+    }
+
+    .input-shell input::placeholder {
+        color: #94a3b8;
+    }
+
+    .input-shell input:focus,
+    .input-shell select:focus {
+        border-color: var(--maroon);
+        background: var(--white);
+        box-shadow: 0 0 0 3.5px var(--maroon-muted);
+    }
+
+    .input-shell input:focus ~ svg,
+    .input-shell select:focus ~ svg {
+        color: var(--maroon);
+    }
+
+    .toggle-visibility {
+        position: absolute;
+        right: 12px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--slate-500);
+        padding: 4px;
+        display: flex;
+        border-radius: 6px;
+        transition: color 0.2s;
+    }
+
+    .toggle-visibility:hover {
+        color: var(--maroon);
+    }
+
+    .toggle-visibility svg {
+        position: static;
+        width: 18px;
+        height: 18px;
+    }
+
+    .btn-login {
+        margin-top: 6px;
+        background: var(--maroon);
+        color: white;
+        border: none;
+        padding: 13px 20px;
+        border-radius: 10px;
+        font-family: inherit;
+        font-size: 14.5px;
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 8px 18px rgba(128, 0, 0, 0.28);
+        transition: background 0.2s, transform 0.12s, box-shadow 0.2s;
+    }
+
+    .btn-login:hover {
+        background: var(--maroon-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(128, 0, 0, 0.34);
+    }
+
+    .btn-login:active {
+        transform: translateY(0);
+    }
+
+    .btn-login:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    .btn-login svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .spinner {
+        width: 16px;
+        height: 16px;
+        border: 2.5px solid rgba(255, 255, 255, 0.4);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: none;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .error-box, .success-box {
+        display: none;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: 12.5px;
+        font-weight: 600;
+        padding: 10px 12px;
+        border-radius: 9px;
+    }
+
+    .error-box {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: var(--danger);
+    }
+
+    .success-box {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #15803d;
+    }
+
+    .error-box svg, .success-box svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    .footer-note {
+        text-align: center;
+        margin-top: 22px;
+        font-size: 12px;
+        color: var(--slate-500);
+        font-weight: 500;
+    }
+
+    .footer-note a {
+        color: var(--maroon);
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .footer-note a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 420px) {
+        .card {
+            padding: 28px 22px 24px;
+            border-radius: 16px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="login-wrap">
+
+    <div class="brand">
+        <div class="brand-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+        </div>
+        <div class="brand-text">
+            <span class="label">Manpower Map</span>
+            <span class="title">ระบบบริหารกำลังคน</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-heading">
+            <h1>สมัครบัญชี</h1>
+            <p>กรอกข้อมูลเพื่อสร้างบัญชีพนักงานใหม่</p>
+        </div>
+
+        <div id="errorBox" class="error-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="errorText">เกิดข้อผิดพลาด</span>
+        </div>
+
+        <div id="successBox" class="success-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span id="successText">สมัครบัญชีสำเร็จ</span>
+        </div>
+
+        <form id="registerForm" autocomplete="off">
+            <div class="field">
+                <label for="empId">รหัสพนักงาน</label>
+                <div class="input-shell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <input type="text" id="empId" name="empId" placeholder="เช่น EMP0200" maxlength="32" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="fullName">ชื่อ-นามสกุล</label>
+                <div class="input-shell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <input type="text" id="fullName" name="fullName" placeholder="เช่น สมชาย ใจดี" maxlength="100" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="roleName">ตำแหน่ง</label>
+                <div class="input-shell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z"></path>
+                        <path d="M4 20v-1c0-2.21 3.58-4 8-4s8 1.79 8 4v1"></path>
+                    </svg>
+                    <select id="roleName" name="roleName">
+                        <option value="พนักงาน">พนักงาน</option>
+                        <option value="หัวหน้างาน">หัวหน้างาน</option>
+                    </select>
+                </div>
+                <span class="hint">สิทธิ์แก้ไขข้อมูลพนักงานกำหนดตามตำแหน่งและฝ่ายโดยผู้ดูแลระบบเท่านั้น</span>
+            </div>
+
+            <div class="field">
+                <label for="deptId">แผนก</label>
+                <div class="input-shell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 21h18"></path>
+                        <path d="M5 21V7l8-4v18"></path>
+                        <path d="M19 21V11l-6-4"></path>
+                    </svg>
+                    <select id="deptId" name="deptId">
+                        <option value="">-- ไม่ระบุแผนก --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="processName">Process</label>
+                <div class="input-shell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                        <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                        <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                    </svg>
+                    <select id="processName" name="processName">
+                        <option value="">-- ไม่ระบุ Process --</option>
+                    </select>
+                </div>
+                <span class="hint">Process ที่ประจำอยู่ (แสดงในหน้ารายชื่อพนักงานและแผนผังโรงงาน)</span>
+            </div>
+
+            <div class="field">
+                <label for="password">รหัสผ่าน</label>
+                <div class="input-shell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <input type="password" id="password" name="password" placeholder="อย่างน้อย 8 ตัวอักษร" required>
+                    <button type="button" class="toggle-visibility" id="togglePw" aria-label="แสดงรหัสผ่าน">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+                <span class="hint">ใช้อย่างน้อย 8 ตัวอักษร</span>
+            </div>
+
+            <div class="field">
+                <label for="confirmPassword">ยืนยันรหัสผ่าน</label>
+                <div class="input-shell">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="กรอกรหัสผ่านอีกครั้ง" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-login" id="registerBtn">
+                <span class="spinner" id="spinner"></span>
+                <svg id="registerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <line x1="20" y1="8" x2="20" y2="14"></line>
+                    <line x1="23" y1="11" x2="17" y2="11"></line>
+                </svg>
+                <span id="registerBtnText">สมัครบัญชี</span>
+            </button>
+        </form>
+    </div>
+
+    <p class="footer-note">มีบัญชีอยู่แล้ว? <a href="login.html">เข้าสู่ระบบ</a></p>
+</div>
+
+<script>
+    const form = document.getElementById('registerForm');
+    const empIdInput = document.getElementById('empId');
+    const fullNameInput = document.getElementById('fullName');
+    const roleSelect = document.getElementById('roleName');
+    const deptSelect = document.getElementById('deptId');
+    const processSelect = document.getElementById('processName');
+    const pwInput = document.getElementById('password');
+    const confirmPwInput = document.getElementById('confirmPassword');
+    const togglePw = document.getElementById('togglePw');
+    const registerBtn = document.getElementById('registerBtn');
+    const spinner = document.getElementById('spinner');
+    const registerIcon = document.getElementById('registerIcon');
+    const registerBtnText = document.getElementById('registerBtnText');
+    const errorBox = document.getElementById('errorBox');
+    const errorText = document.getElementById('errorText');
+    const successBox = document.getElementById('successBox');
+    const successText = document.getElementById('successText');
+
+    togglePw.addEventListener('click', () => {
+        const isPassword = pwInput.type === 'password';
+        pwInput.type = isPassword ? 'text' : 'password';
+        confirmPwInput.type = isPassword ? 'text' : 'password';
+    });
+
+    function showError(message) {
+        successBox.style.display = 'none';
+        errorText.textContent = message;
+        errorBox.style.display = 'flex';
+    }
+
+    function hideMessages() {
+        errorBox.style.display = 'none';
+        successBox.style.display = 'none';
+    }
+
+    function showSuccess(message) {
+        errorBox.style.display = 'none';
+        successText.textContent = message;
+        successBox.style.display = 'flex';
+    }
+
+    function setLoading(isLoading) {
+        registerBtn.disabled = isLoading;
+        spinner.style.display = isLoading ? 'inline-block' : 'none';
+        registerIcon.style.display = isLoading ? 'none' : 'block';
+        registerBtnText.textContent = isLoading ? 'กำลังสมัคร...' : 'สมัครบัญชี';
+    }
+
+    // โหลดรายชื่อแผนกมาใส่ dropdown
+    (async function loadDepartments() {
+        try {
+            const res = await fetch('/api/departments', { credentials: 'same-origin' });
+            const data = await res.json().catch(() => null);
+            if (res.ok && data && data.success && Array.isArray(data.departments)) {
+                for (const d of data.departments) {
+                    const opt = document.createElement('option');
+                    opt.value = d.deptId;
+                    opt.textContent = d.deptName;
+                    deptSelect.appendChild(opt);
+                }
+            }
+        } catch (err) {
+            console.warn('โหลดรายชื่อแผนกไม่สำเร็จ:', err);
+        }
+    })();
+
+    // โหลดรายชื่อ Process ทั้งหมด (ตรงกับตัวกรองใน main.html) มาใส่ dropdown
+    (async function loadProcesses() {
+        try {
+            const res = await fetch('/api/processes', { credentials: 'same-origin' });
+            const data = await res.json().catch(() => null);
+            if (res.ok && data && data.success && Array.isArray(data.processes)) {
+                for (const p of data.processes) {
+                    const opt = document.createElement('option');
+                    opt.value = p;
+                    opt.textContent = p;
+                    processSelect.appendChild(opt);
+                }
+            }
+        } catch (err) {
+            console.warn('โหลดรายชื่อ Process ไม่สำเร็จ:', err);
+        }
+    })();
+
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        hideMessages();
+
+        const empId = empIdInput.value.trim();
+        const fullName = fullNameInput.value.trim();
+        const password = pwInput.value;
+        const confirmPassword = confirmPwInput.value;
+        const roleName = roleSelect.value;
+        const deptId = deptSelect.value;
+
+        if (!empId || !fullName || !password || !confirmPassword) {
+            showError('กรุณากรอกข้อมูลให้ครบถ้วน');
+            return;
+        }
+
+        if (password.length < 8) {
+            showError('รหัสผ่านต้องมีความยาวอย่างน้อย 8 ตัวอักษร');
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            showError('รหัสผ่านทั้งสองช่องไม่ตรงกัน');
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({
+                    Emp_ID: empId,
+                    FullName: fullName,
+                    password: password,
+                    confirmPassword: confirmPassword,
+                    Role: roleName,
+                    DeptId: deptId || null,
+                    ProcessName: processSelect.value || null
+                })
+            });
+
+            const data = await response.json().catch(() => null);
+
+            if (response.ok && data && data.success) {
+                showSuccess((data.message || 'สมัครบัญชีสำเร็จ') + ' กำลังพาไปหน้าเข้าสู่ระบบ...');
+                form.reset();
+                setTimeout(() => { window.location.href = 'login.html'; }, 1600);
+                return;
+            }
+
+            if (response.status === 429) {
+                showError('พยายามสมัครบัญชีถี่เกินไป กรุณารอสักครู่แล้วลองใหม่');
+            } else {
+                showError((data && data.message) ? data.message : 'สมัครบัญชีไม่สำเร็จ กรุณาลองใหม่อีกครั้ง');
+            }
+        } catch (err) {
+            console.warn('สมัครบัญชีไม่สำเร็จ:', err);
+            showError('ไม่สามารถเชื่อมต่อกับระบบได้ กรุณาลองใหม่อีกครั้ง');
+        } finally {
+            setLoading(false);
+        }
+    });
+</script>
+
+</body>
+</html>
